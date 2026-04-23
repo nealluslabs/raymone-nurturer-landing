@@ -7,7 +7,7 @@ import {RiServiceLine} from "react-icons/ri"
 import {BiMessageSquareDetail} from "react-icons/bi"
 import {useState} from 'react'
 //import navIcon from 'src/images/navicon.svg'
-import navIcon from '../../../images/Cooler.png'
+import navIcon from '../../../images/raymone-logo-dark.png'
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaWpforms } from "react-icons/fa";
 
@@ -27,7 +27,7 @@ const Nav = () => {
      <div className='navContainer' >
       <div style={{ display:"flex",width:"100%",justifyContent:"flex-start",alignItems:"center",paddingRight:"2rem",fontSize:"2rem",color:"white",fontWeight:"900"/*color:"#E88B1E"*/,marginLeft:"0rem"}}>
      
-        <img src={navIcon} style={{width:"80px"}} alt="nurturer  logo"/>
+        <img src={navIcon} style={{width:"80px", paddingTop:"1rem"}} alt="nurturer  logo"/>
         {/*<div style={{position:"relative",top:"2rem",left:"2rem"}}>
         Nurturer
         </div>*/}

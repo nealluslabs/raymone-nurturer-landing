@@ -38,7 +38,7 @@ const Footer = () => {
        <ul>
         <li>
           <div style={{display:"flex",flexDirection:"row",justifyContent:"center",alignItems:"center",gap:"0.6rem",fontSize:"1.1rem"}}>
-           hello@raymonetech.com
+           info@raymonetech.com
 
           </div>
           
@@ -123,11 +123,11 @@ const Footer = () => {
 
 
       <div className="footer__copyright">
-       <p>
-        &copy; 2025 All rights Reserved.
+       <p style={{fontSize:"1.1rem"}}>
+        &copy; 2026 All rights Reserved.
        </p>
 
-       <div style={{display:"flex",justifyContent:"center",gap:"2rem"}}>
+       <div style={{display:"flex",justifyContent:"center",gap:"2rem",fontSize:"1.1rem"}}>
        <p>Terms and Conditions</p>
        <p>Privacy Policy</p>
        </div>

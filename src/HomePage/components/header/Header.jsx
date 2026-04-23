@@ -67,7 +67,7 @@ const DummyHeader = () => {
               <button 
               onClick ={()=>{window.location.href = '#'}}
           style={{ 
-            backgroundColor: "#B82224",
+            backgroundColor: "#980F0F",
             color: 'white',
             padding: '10px 20px',
             borderRadius: '8px',
@@ -78,7 +78,7 @@ const DummyHeader = () => {
           }}
         >
             
-            Login
+            Contact Us
            </button>
      
               {/*<a href={'https://onerecruiter-recruiter.netlify.app/login'}>

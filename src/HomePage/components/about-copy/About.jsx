@@ -1,6 +1,6 @@
 import React from 'react'
 import './about.css'
-import mobileAndWeb from '../../../images/Procurement1.png'
+import mobileAndWeb from '../../../images/oil-gas.jpg'
 import {AiOutlineArrowRight} from 'react-icons/ai'
 //import { useNavigate } from 'react-router-dom'
 
@@ -23,12 +23,9 @@ const DummyAbout = () => {
 
 
     {<div className='aboutCTA1'>
-    
- 
-    <img  className='CTAboximg1' src={mobileAndWeb} alt="search image"/>
-    
-       
-        
+        <div className='CTAboximg1-wrapper'>
+            <img className='CTAboximg1' src={mobileAndWeb} alt="search image"/>
+        </div>
         </div>}
        
 
