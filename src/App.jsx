@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
-import HomePage from './HomePage/HomePage';
+import AgentsPage from './AgentsPage/AgentsPage';
 import ProjectsPage from './ProjectsPage/ProjectsPage';
 
 {/*import PersonalLoansPage from './PersonalLoansPage/PersonalLoansPage';
@@ -45,7 +45,7 @@ const App = () => {
   return (
   <Router>
     <Routes>
-     < Route path="/"  element={<HomePage/>}/>
+     < Route path="/"  element={<AgentsPage/>}/>
      
      < Route path="/projects"  element={<ProjectsPage/>}/> 
     {/* < Route path="/about"  element={<AboutPage/>}/> 

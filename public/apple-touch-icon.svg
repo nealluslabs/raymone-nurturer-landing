@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Raymone Technologies">
+  <rect width="180" height="180" fill="#000000"/>
+  <text
+    x="90"
+    y="118"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="800"
+    font-size="96"
+    letter-spacing="-6"
+  >
+    <tspan fill="#A8201A">R</tspan><tspan fill="#FFFFFF">T</tspan>
+  </text>
+</svg>
