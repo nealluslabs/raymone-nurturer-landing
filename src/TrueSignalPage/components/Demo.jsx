@@ -20,9 +20,9 @@ const SYMPTOMS = [
 // once the real CMS CCW Limited Data Set request is approved and the same script is
 // re-run against it unchanged.
 const COUNTY_MODEL = {
-  high: { conversionPct: 12.5, n: 1230, p: 154 },
-  mod: { conversionPct: 4.8, n: 1575, p: 75 },
-  low: { conversionPct: 1.2, n: 1778, p: 22 },
+  high: { conversionPct: 13.25, n: 1215, p: 161 },
+  mod: { conversionPct: 5.6, n: 1662, p: 93 },
+  low: { conversionPct: 1.37, n: 1756, p: 24 },
 }
 
 function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
