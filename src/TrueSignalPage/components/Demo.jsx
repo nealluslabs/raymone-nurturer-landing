@@ -14,6 +14,17 @@ const SYMPTOMS = [
   { key: 'rash', label: 'Rash noticed' },
 ]
 
+// Sourced from ccw-analysis/analyze.py (2026-09-24 run) — a corrected cohort analysis
+// (flagged cohort N, conversion to Lyme within 12mo = P, rate = P/N) run against a
+// SYNTHETIC CCW-schema dataset, not real Medicare claims. Numbers will be replaced
+// once the real CMS CCW Limited Data Set request is approved and the same script is
+// re-run against it unchanged.
+const COUNTY_MODEL = {
+  high: { conversionPct: 12.5, n: 1230, p: 154 },
+  mod: { conversionPct: 4.8, n: 1575, p: 75 },
+  low: { conversionPct: 1.2, n: 1778, p: 22 },
+}
+
 function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
   const county = COUNTIES[countyIdx]
   let score = 5
@@ -41,7 +52,13 @@ function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
 
   score = Math.max(2, Math.min(95, score))
   const tier = score >= 60 ? 'Elevated' : score >= 30 ? 'Moderate' : 'Low'
-  const fpr = tier === 'Elevated' ? 28 : tier === 'Moderate' ? 18 : 6
+
+  // Modeled conversion rate for this county's tick-incidence tier, from the synthetic
+  // CCW cohort analysis — replaces the earlier arbitrary 28/18/6 placeholder.
+  const model = COUNTY_MODEL[county.tier]
+  const conversionPct = model.conversionPct
+  const nonConversionPct = +(100 - conversionPct).toFixed(1)
+
   const nextStep =
     tier === 'Elevated'
       ? 'Recommend two-tier Lyme serology (ELISA, reflex Western blot); document occupational and geographic exposure history.'
@@ -55,7 +72,7 @@ function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
       ? "There's some chance your symptoms could be tick-related, based on where you live and your recent activity. Worth mentioning to your doctor if things don't improve soon."
       : "Based on what you've shared, a tick-related cause looks less likely right now — but tell your doctor if new symptoms or a bite show up."
 
-  return { score, tier, fpr, nextStep, patientBody, factors, zip: county.zip }
+  return { score, tier, conversionPct, nonConversionPct, model, nextStep, patientBody, factors, zip: county.zip }
 }
 
 const riskColor = (tier) =>
@@ -82,7 +99,7 @@ const Demo = () => {
         <p className="ts-eyebrow">Try it</p>
         <h2>Signal Card</h2>
         <p className="ts-demo__note">
-          EXAMPLE ASSESSMENT &mdash; illustrative scoring, pending calibration against MEPS / HCUP base rates. No patient data is stored or transmitted.
+          EXAMPLE ASSESSMENT &mdash; conversion-rate figures below come from a synthetic CCW-schema cohort model (not real Medicare claims), built to be re-run unchanged once real CMS CCW data arrives. No patient data is stored or transmitted.
         </p>
 
         <div className="ts-instrument">
@@ -184,15 +201,19 @@ const Demo = () => {
               </ul>
 
               <div className="ts-stat-strip2">
-                <div className="ts-stat2"><div className="label">False-positive rate</div><div className="value">~{result.fpr}%</div></div>
-                <div className="ts-stat2"><div className="label">Basis</div><div className="value" style={{ fontSize: 12.5 }}>MEPS &middot; HCUP &middot; CDC &middot; BLS/ACS</div></div>
+                <div className="ts-stat2"><div className="label">Modeled non-conversion</div><div className="value">~{result.nonConversionPct}%</div></div>
+                <div className="ts-stat2"><div className="label">Basis</div><div className="value" style={{ fontSize: 12.5 }}>Synthetic CCW cohort, n={result.model.n} (this county tier)</div></div>
               </div>
 
               <div className="ts-next-step"><b>Suggested next step</b>{result.nextStep}</div>
               <p className="ts-disclaimer">
-                Illustrative scoring logic &mdash; combines a population base rate with geographic (CDC), occupational
-                (BLS/ACS), and symptom-presentation factors. Not yet calibrated against fitted MEPS/HCUP statistics;
-                contains no individual claims data.
+                Modeled non-conversion rate comes from a corrected cohort analysis (flagged cohort N, conversion to
+                Lyme within 12 months = P, rate = P/N) run against a <b>synthetic</b> CCW-schema dataset &mdash; not real
+                Medicare claims. The same script is designed to run unchanged against the real CMS CCW Limited Data
+                Set once that request is approved. Separately, published literature indicates early two-tier Lyme
+                serology misses roughly 3 in 4 true cases (Branda et al., 2017) &mdash; a distinct testing-sensitivity
+                limitation this score does not resolve, which is why any elevated flag still recommends serology
+                and clinical follow-up rather than treating the score itself as a diagnosis.
               </p>
             </div>
           </div>
@@ -204,7 +225,7 @@ const Demo = () => {
             <div className="ts-patient-card">
               <span className="p-tier">{result.tier === 'Elevated' ? 'Higher chance' : result.tier === 'Moderate' ? 'Some chance' : 'Lower chance'}</span>
               <p>{result.patientBody}</p>
-              <span className="p-foot">Estimated ~{result.fpr} in 100 people with this exact profile would not turn out to have Lyme &mdash; worth testing, not worth panic.</span>
+              <span className="p-foot">Based on a synthetic model (not yet real patient data): about {result.nonConversionPct} in 100 people with this county's profile did not turn out to have Lyme &mdash; worth testing, not worth panic.</span>
             </div>
           </div>
           <div>
