@@ -4,7 +4,7 @@
   --ts-surface-2: #F2F1E9;
   --ts-ink: #202B22;
   --ts-ink-muted: #59685D;
-  --ts-ink-faint: #8A9689;
+  --ts-ink-faint: #5A695E; /* darkened from #8A9689, then again from #66756A, 2026-09-24 -- on this light a page background, a meaningfully lighter "faint" tier than --ts-ink-muted cannot pass WCAG AA 4.5:1 for small text at all; this value is close to --ts-ink-muted by necessity, not oversight */
   --ts-line: #CBD2C1;
   --ts-line-strong: #A9B39D;
   --ts-accent: #3B5C42;
@@ -74,8 +74,8 @@
   display: inline-flex; align-items: center; gap: 8px; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600;
   font-size: 14px; padding: 10px 18px; border-radius: 100px; border: 1px solid transparent; cursor: pointer;
 }
-.ts-btn--primary { background: var(--ts-accent); color: var(--ts-accent-ink); }
-.ts-btn--outline { border-color: var(--ts-line-strong); color: var(--ts-ink); }
+.ts-btn.ts-btn--primary { background: var(--ts-accent); color: var(--ts-accent-ink); }
+.ts-btn.ts-btn--outline { border-color: var(--ts-line-strong); color: var(--ts-ink); }
 
 /* ---------- hero ---------- */
 .ts-hero { padding: 88px 48px 64px; }

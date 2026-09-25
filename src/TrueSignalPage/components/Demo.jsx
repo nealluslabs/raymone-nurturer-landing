@@ -140,8 +140,13 @@ const Demo = () => {
               <div className="ts-field-row">
                 <span className="ts-field-num">3</span>
                 <div>
-                  <span className="ts-field-label">County / tick-incidence tier (CDC Tick Data &amp; Tracker)</span>
-                  <select className="ts-select" value={countyIdx} onChange={(e) => setCountyIdx(Number(e.target.value))}>
+                  <span className="ts-field-label" id="county-select-label">County / tick-incidence tier (CDC Tick Data &amp; Tracker)</span>
+                  <select
+                    className="ts-select"
+                    aria-labelledby="county-select-label"
+                    value={countyIdx}
+                    onChange={(e) => setCountyIdx(Number(e.target.value))}
+                  >
                     {COUNTIES.map((c, i) => (
                       <option key={c.label} value={i}>{c.label}</option>
                     ))}
@@ -168,8 +173,13 @@ const Demo = () => {
               <div className="ts-field-row">
                 <span className="ts-field-num">5</span>
                 <div>
-                  <span className="ts-field-label">Symptom duration, unresolved</span>
-                  <select className="ts-select" value={duration} onChange={(e) => setDuration(e.target.value)}>
+                  <span className="ts-field-label" id="duration-select-label">Symptom duration, unresolved</span>
+                  <select
+                    className="ts-select"
+                    aria-labelledby="duration-select-label"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                  >
                     <option value="short">Under 4 weeks</option>
                     <option value="mid">1&ndash;3 months</option>
                     <option value="long">Over 3 months</option>
