@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Footer = () => (
-  <footer className="ts-footer">
+  <footer className="ts-footer ts-no-print">
     <div className="ts-container ts-footer__row">
       <span>Signal Card &middot; True Signal Analytics &middot; [Add contact email]</span>
       <span>

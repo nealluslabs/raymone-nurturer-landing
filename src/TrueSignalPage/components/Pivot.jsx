@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Pivot = () => (
-  <section className="ts-section ts-pivot">
+  <section className="ts-section ts-pivot ts-no-print">
     <div className="ts-container ts-pivot__grid">
       <div>
         <p className="ts-eyebrow">How we got here</p>

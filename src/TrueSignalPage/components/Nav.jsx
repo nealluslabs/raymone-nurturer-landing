@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Nav = () => (
-  <nav className="ts-nav">
+  <nav className="ts-nav ts-no-print">
     <div className="ts-nav__brand">True Signal <span>Analytics</span></div>
     <div className="ts-nav__links">
       <a href="#how-it-works">How it works</a>

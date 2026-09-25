@@ -78,6 +78,15 @@
 .ts-btn.ts-btn--primary { background: var(--ts-accent); color: var(--ts-accent-ink); }
 .ts-btn.ts-btn--outline { border-color: var(--ts-line-strong); color: var(--ts-ink); background: var(--ts-surface); }
 
+/* ---------- share / print ---------- */
+.ts-demo__actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px 0 0; }
+
+@media print {
+  .ts-no-print { display: none !important; }
+  #printable-card { grid-template-columns: 1fr !important; }
+  .ts-panel { box-shadow: none !important; border: 1px solid #999 !important; page-break-inside: avoid; }
+}
+
 /* ---------- FHIR output ---------- */
 .ts-fhir { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--ts-line); }
 .ts-fhir__row { display: flex; gap: 10px; flex-wrap: wrap; }

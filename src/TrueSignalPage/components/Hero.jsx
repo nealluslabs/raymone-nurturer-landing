@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Hero = () => (
-  <header className="ts-hero">
+  <header className="ts-hero ts-no-print">
     <div className="ts-container">
       <div className="ts-hero__inner">
         <p className="ts-eyebrow">TOPx HHS Tech Sprint · Lyme Innovation</p>

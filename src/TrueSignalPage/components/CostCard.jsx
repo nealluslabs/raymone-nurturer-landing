@@ -19,7 +19,7 @@ const CostCard = () => {
   const months = (COST_MODEL.meanDaysToDiagnosis / 30.4).toFixed(1)
 
   return (
-    <section id="cost" className="ts-section ts-cost">
+    <section id="cost" className="ts-section ts-cost ts-no-print">
       <div className="ts-container">
         <p className="ts-eyebrow">Secondary deliverable &mdash; True Cost</p>
         <h2>True Cost Card</h2>

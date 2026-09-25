@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Team = () => (
-  <section id="team" className="ts-section ts-team">
+  <section id="team" className="ts-section ts-team ts-no-print">
     <div className="ts-container">
       <p className="ts-eyebrow">Team</p>
       <h2>True Signal Analytics</h2>

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { buildRiskAssessment } from '../fhir'
+import { encodeStateToSearch, decodeStateFromSearch } from '../shareLink'
 
 const COUNTIES = [
   { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759' },
@@ -79,12 +80,20 @@ function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
 const riskColor = (tier) =>
   tier === 'Elevated' ? 'var(--ts-risk-high)' : tier === 'Moderate' ? 'var(--ts-risk-mod)' : 'var(--ts-risk-low)'
 
+const SYMPTOM_KEYS = SYMPTOMS.map((s) => s.key)
+
 const Demo = () => {
-  const [symptoms, setSymptoms] = useState(['fatigue', 'joint', 'fog'])
-  const [bite, setBite] = useState('no')
-  const [occ, setOcc] = useState('yes')
-  const [countyIdx, setCountyIdx] = useState(0)
-  const [duration, setDuration] = useState('long')
+  const shared = useMemo(
+    () => (typeof window !== 'undefined' ? decodeStateFromSearch(window.location.search, SYMPTOM_KEYS) : null),
+    []
+  )
+
+  const [symptoms, setSymptoms] = useState(shared ? shared.symptoms : ['fatigue', 'joint', 'fog'])
+  const [bite, setBite] = useState(shared ? shared.bite : 'no')
+  const [occ, setOcc] = useState(shared ? shared.occ : 'yes')
+  const [countyIdx, setCountyIdx] = useState(shared ? shared.countyIdx : 0)
+  const [duration, setDuration] = useState(shared ? shared.duration : 'long')
+  const [linkCopied, setLinkCopied] = useState(false)
 
   const toggleSymptom = (key) =>
     setSymptoms((prev) => (prev.includes(key) ? prev.filter((s) => s !== key) : [...prev, key]))
@@ -113,6 +122,21 @@ const Demo = () => {
     URL.revokeObjectURL(url)
   }
 
+  const copyShareLink = async () => {
+    const search = encodeStateToSearch({ symptoms, bite, occ, countyIdx, duration })
+    const shareUrl = `${window.location.origin}${window.location.pathname}?${search}#demo`
+    window.history.replaceState(null, '', `?${search}#demo`)
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      setLinkCopied(true)
+      setTimeout(() => setLinkCopied(false), 2000)
+    } catch {
+      window.prompt('Copy this link:', shareUrl)
+    }
+  }
+
+  const printCard = () => window.print()
+
   return (
     <section id="demo" className="ts-section ts-demo">
       <div className="ts-container">
@@ -122,7 +146,19 @@ const Demo = () => {
           EXAMPLE ASSESSMENT &mdash; conversion-rate figures below come from a synthetic CCW-schema cohort model (not real Medicare claims), built to be re-run unchanged once real CMS CCW data arrives. No patient data is stored or transmitted.
         </p>
 
-        <div className="ts-instrument">
+        <div className="ts-demo__actions ts-no-print">
+          <button type="button" className="ts-btn ts-btn--outline" onClick={copyShareLink}>
+            {linkCopied ? 'Link copied!' : 'Share this result'}
+          </button>
+          <button type="button" className="ts-btn ts-btn--outline" onClick={printCard}>
+            Print / Save as PDF
+          </button>
+          <span className="ts-hint" style={{ marginTop: 0 }}>
+            No account or database &mdash; the link encodes your inputs directly; nothing is stored on a server.
+          </span>
+        </div>
+
+        <div className="ts-instrument" id="printable-card">
           {/* Intake */}
           <div className="ts-panel">
             <div className="ts-panel-head"><h4>Intake</h4><span className="idx">01 / visit</span></div>
@@ -246,7 +282,7 @@ const Demo = () => {
                 and clinical follow-up rather than treating the score itself as a diagnosis.
               </p>
 
-              <div className="ts-fhir">
+              <div className="ts-fhir ts-no-print">
                 <div className="ts-fhir__row">
                   <button type="button" className="ts-btn ts-btn--outline" onClick={() => setShowFhir((v) => !v)} aria-expanded={showFhir}>
                     {showFhir ? 'Hide' : 'View'} FHIR output

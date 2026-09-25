@@ -8,7 +8,7 @@ const sources = [
 ]
 
 const DataRigor = () => (
-  <section id="data" className="ts-section">
+  <section id="data" className="ts-section ts-no-print">
     <div className="ts-container">
       <p className="ts-eyebrow">Data &amp; rigor</p>
       <h2>Built on public federal data. Nothing else.</h2>

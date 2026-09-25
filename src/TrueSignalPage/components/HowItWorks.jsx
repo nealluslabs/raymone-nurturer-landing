@@ -8,7 +8,7 @@ const steps = [
 ]
 
 const HowItWorks = () => (
-  <section id="how-it-works" className="ts-section">
+  <section id="how-it-works" className="ts-section ts-no-print">
     <div className="ts-container">
       <p className="ts-eyebrow">How it works</p>
       <h2>Four steps, at the point of care</h2>
