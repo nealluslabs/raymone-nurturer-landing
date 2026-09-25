@@ -73,9 +73,19 @@
 .ts-btn {
   display: inline-flex; align-items: center; gap: 8px; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600;
   font-size: 14px; padding: 10px 18px; border-radius: 100px; border: 1px solid transparent; cursor: pointer;
+  background: none; appearance: none;
 }
 .ts-btn.ts-btn--primary { background: var(--ts-accent); color: var(--ts-accent-ink); }
-.ts-btn.ts-btn--outline { border-color: var(--ts-line-strong); color: var(--ts-ink); }
+.ts-btn.ts-btn--outline { border-color: var(--ts-line-strong); color: var(--ts-ink); background: var(--ts-surface); }
+
+/* ---------- FHIR output ---------- */
+.ts-fhir { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--ts-line); }
+.ts-fhir__row { display: flex; gap: 10px; flex-wrap: wrap; }
+.ts-fhir__code {
+  margin-top: 12px; padding: 14px; background: var(--ts-ink); color: var(--ts-surface); border-radius: 8px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.5; overflow-x: auto; max-height: 360px;
+  overflow-y: auto; white-space: pre;
+}
 
 /* ---------- hero ---------- */
 .ts-hero { padding: 88px 48px 64px; }

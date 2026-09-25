@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { buildRiskAssessment } from '../fhir'
 
 const COUNTIES = [
   { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759' },
@@ -92,6 +93,25 @@ const Demo = () => {
     () => computeScore({ symptoms, bite, occ, countyIdx, duration }),
     [symptoms, bite, occ, countyIdx, duration]
   )
+
+  const [showFhir, setShowFhir] = useState(false)
+  const fhirResource = useMemo(
+    () => buildRiskAssessment({ result, symptoms, bite, occ, county: COUNTIES[countyIdx], duration }),
+    [result, symptoms, bite, occ, countyIdx, duration]
+  )
+  const fhirJson = useMemo(() => JSON.stringify(fhirResource, null, 2), [fhirResource])
+
+  const downloadFhir = () => {
+    const blob = new Blob([fhirJson], { type: 'application/fhir+json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'signal-card-risk-assessment.fhir.json'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
 
   return (
     <section id="demo" className="ts-section ts-demo">
@@ -225,6 +245,22 @@ const Demo = () => {
                 limitation this score does not resolve, which is why any elevated flag still recommends serology
                 and clinical follow-up rather than treating the score itself as a diagnosis.
               </p>
+
+              <div className="ts-fhir">
+                <div className="ts-fhir__row">
+                  <button type="button" className="ts-btn ts-btn--outline" onClick={() => setShowFhir((v) => !v)} aria-expanded={showFhir}>
+                    {showFhir ? 'Hide' : 'View'} FHIR output
+                  </button>
+                  <button type="button" className="ts-btn ts-btn--outline" onClick={downloadFhir}>
+                    Download FHIR (.json)
+                  </button>
+                </div>
+                <p className="ts-hint">
+                  A standards-valid FHIR R4 RiskAssessment resource generated from this result &mdash; not a working
+                  EHR integration (that's a separate, larger effort), but a real, exportable interoperability output.
+                </p>
+                {showFhir && <pre className="ts-fhir__code">{fhirJson}</pre>}
+              </div>
             </div>
           </div>
         </div>
