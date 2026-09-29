@@ -7,6 +7,7 @@ import DataRigor from './components/DataRigor'
 import Team from './components/Team'
 import Demo from './components/Demo'
 import CostCard from './components/CostCard'
+import EHRMockup from './components/EHRMockup'
 import Footer from './components/Footer'
 import './truesignal.css'
 
@@ -26,6 +27,7 @@ const TrueSignalPage = () => {
       <Team />
       <Demo />
       <CostCard />
+      <EHRMockup />
       <Footer />
     </div>
   )

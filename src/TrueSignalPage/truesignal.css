@@ -78,6 +78,46 @@
 .ts-btn.ts-btn--primary { background: var(--ts-accent); color: var(--ts-accent-ink); }
 .ts-btn.ts-btn--outline { border-color: var(--ts-line-strong); color: var(--ts-ink); background: var(--ts-surface); }
 
+/* ---------- EHR mockup (neutral third-party chrome, distinct from the True Signal brand) ---------- */
+.ts-ehr__frame {
+  margin-top: 24px; border: 1px solid #C7C7C0; border-radius: 6px; overflow: hidden;
+  background: #FAFAF8; box-shadow: var(--ts-shadow);
+}
+.ts-ehr__topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  background: #3A3F45; color: #E4E5E2; padding: 10px 16px; font-family: 'IBM Plex Sans', sans-serif;
+}
+.ts-ehr__logo { font-weight: 700; font-size: 13px; letter-spacing: .03em; }
+.ts-ehr__patient { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #C6C8C3; }
+.ts-ehr__body { display: grid; grid-template-columns: 140px 1fr 300px; min-height: 260px; }
+@media (max-width: 900px) { .ts-ehr__body { grid-template-columns: 1fr; } }
+.ts-ehr__nav {
+  background: #F0F0EC; border-right: 1px solid #DADAD3; display: flex; flex-direction: column;
+  font-size: 12.5px; color: #5A5D57;
+}
+.ts-ehr__nav span { padding: 10px 14px; border-bottom: 1px solid #E3E3DC; }
+.ts-ehr__nav span.active { background: #FFFFFF; color: #24261F; font-weight: 600; border-left: 3px solid #6B6E66; }
+.ts-ehr__note { padding: 16px; font-size: 13px; color: #33352F; border-right: 1px solid #DADAD3; }
+.ts-ehr__note-title { font-weight: 600; margin-bottom: 8px; }
+.ts-ehr__note-placeholder { color: var(--ts-ink-muted); font-size: 11.5px; font-style: italic; margin-top: 10px; }
+.ts-ehr__app { background: var(--ts-surface); display: flex; flex-direction: column; }
+.ts-ehr__app-head {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; background: var(--ts-accent-soft);
+  border-bottom: 1px solid var(--ts-line-strong); font-family: 'IBM Plex Mono', monospace;
+}
+.ts-ehr__app-head span { font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--ts-ink-muted); }
+.ts-ehr__app-head b { font-size: 14px; color: var(--ts-accent); }
+.ts-ehr__app-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+.ts-ehr__app-line { font-size: 12px; color: var(--ts-ink-muted); }
+.ts-ehr__app-next {
+  margin-top: 6px; background: var(--ts-accent-soft); border: 1px solid var(--ts-line-strong); border-radius: 6px;
+  padding: 8px 10px; font-size: 12px;
+}
+.ts-ehr__plan { margin-top: 28px; }
+.ts-ehr__plan h3 { font-size: 17px; margin-bottom: 10px; }
+.ts-ehr__plan ol { padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
+.ts-ehr__plan li { font-size: 14px; line-height: 1.65; color: var(--ts-ink); }
+
 /* ---------- share / print ---------- */
 .ts-demo__actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px 0 0; }
 
