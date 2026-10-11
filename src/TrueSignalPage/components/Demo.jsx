@@ -19,11 +19,21 @@ import { encodeStateToSearch, decodeStateFromSearch } from '../shareLink'
 // (share of the whole county workforce in these industries), not an individual risk
 // signal -- it cannot replace the patient's own yes/no occupation answer the way CDC's
 // incidence rate replaced the illustrative geography tier; shown as real cited context only.
+// REAL DATA: CDC ArboNET national tick surveillance, via Foster et al., "Prevalence of five
+// human pathogens in host-seeking Ixodes scapularis and Ixodes pacificus by region, state,
+// and county in the contiguous United States," Ticks Tick Borne Dis. 2023;14(6):102250.
+// STATE-level Borrelia burgdorferi s.s. infection prevalence in nymphal ticks -- CDC's own
+// data-sharing agreement prohibits releasing this below the state level, so this is
+// genuinely the finest granularity available, not a limitation of our integration. Georgia
+// has no reported value in the source (not fabricated as zero -- shown as null/"not
+// reported"). This measures a different thing than the county case rate above: the odds a
+// tick bite in this state carries the bacterium at all, vs. how often bites actually become
+// diagnosed Lyme cases county-wide.
 const COUNTIES = [
-  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1, agPct: 0.77 },
-  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1, agPct: 0.35 },
-  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3, agPct: 0.43 },
-  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33, agPct: 0.17 },
+  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1, agPct: 0.77, tickInfectionPct: 19.45 },
+  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1, agPct: 0.35, tickInfectionPct: 23.57 },
+  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3, agPct: 0.43, tickInfectionPct: 21.11 },
+  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33, agPct: 0.17, tickInfectionPct: null },
 ]
 
 const SYMPTOMS = [
@@ -226,7 +236,14 @@ const Demo = () => {
                   </select>
                   <p className="ts-hint">
                     ZIP {result.zip} &middot; {result.county.cases} cases / {result.county.population.toLocaleString()} residents,
-                    2019&ndash;2022 avg. &mdash; {result.county.ratePer100k}/100k/yr (real CDC county data, not modeled)
+                    2019&ndash;2022 avg. &mdash; {result.county.ratePer100k}/100k/yr (real CDC county case data, not modeled)
+                  </p>
+                  <p className="ts-hint">
+                    {result.county.tickInfectionPct != null
+                      ? <>State-level: {result.county.tickInfectionPct}% of nymphal ticks tested carry the Lyme
+                          bacterium (CDC ArboNET surveillance, Foster et al. 2023) &mdash; a different measure than
+                          the case rate above: infection risk per bite, not diagnosed cases.</>
+                      : 'State-level tick infection-prevalence data: not reported for Georgia in CDC ArboNET surveillance (not zero — genuinely not published, so not shown as a number).'}
                   </p>
                 </div>
               </div>
