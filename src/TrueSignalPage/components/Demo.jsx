@@ -9,11 +9,21 @@ import { encodeStateToSearch, decodeStateFromSearch } from '../shareLink'
 // CDC's own >=10/100k "high-incidence state" threshold, extended to counties -- CDC does
 // not publish an official 3-tier county classification, so this bucketing is ours, applied
 // to real case/population figures rather than invented.
+// REAL DATA: Census ACS 5-year Subject Table S2403 ("Industry by Sex for the Civilian
+// Employed Population 16 Years and Over"), agriculture/forestry/fishing/hunting/mining
+// count divided by total civilian employed population = % of county workforce in that
+// industry. Litchfield uses the 2019 vintage (pre-dates Connecticut's June 2022 switch
+// from legacy counties to Planning Regions -- FIPS 09005 "Litchfield County" is no longer
+// current geography; Census now reports that area under Northwest Hills Planning Region,
+// FIPS 09160); the others use the current 2022 vintage. This is a POPULATION statistic
+// (share of the whole county workforce in these industries), not an individual risk
+// signal -- it cannot replace the patient's own yes/no occupation answer the way CDC's
+// incidence rate replaced the illustrative geography tier; shown as real cited context only.
 const COUNTIES = [
-  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1 },
-  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1 },
-  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3 },
-  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33 },
+  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1, agPct: 0.77 },
+  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1, agPct: 0.35 },
+  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3, agPct: 0.43 },
+  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33, agPct: 0.17 },
 ]
 
 const SYMPTOMS = [
@@ -233,6 +243,11 @@ const Demo = () => {
                       <input type="radio" name="occ" checked={occ === 'no'} onChange={() => setOcc('no')} />No
                     </label>
                   </div>
+                  <p className="ts-hint">
+                    For context: {result.county.agPct}% of {result.county.label.split(' —')[0]}'s entire workforce
+                    is in agriculture/forestry/fishing/hunting/mining (Census ACS) &mdash; a population statistic,
+                    not this patient's own answer above.
+                  </p>
                 </div>
               </div>
 

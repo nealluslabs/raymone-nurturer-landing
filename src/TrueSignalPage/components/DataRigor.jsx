@@ -2,9 +2,9 @@ import React from 'react'
 
 const sources = [
   { src: 'CDC Tick Data & Tracker', role: 'County-level tickborne-disease incidence — the geographic exposure signal. Live in Signal Card today: real case counts and rates per 100k, not modeled.', real: true },
-  { src: 'AHRQ MEPS', role: 'Population-level condition and expenditure patterns, used to calibrate base rates. Public use files, no approval required — not yet pulled into the model.' },
+  { src: 'AHRQ MEPS', role: 'Population-level condition and expenditure patterns. Real published AHRQ statistic now cited in the True Cost Card (women with a fibromyalgia/chronic-fatigue-cluster condition: $10,542 vs $4,357 mean annual cost) — supporting context, not yet a direct input to Signal Card\'s scoring.', cited: true },
   { src: 'AHRQ HCUP', role: 'Regional hospital and ED utilization patterns. DUA submitted, awaiting response.' },
-  { src: 'BLS / Census ACS', role: 'Occupational and geographic exposure risk — outdoor and agricultural work. Public, no approval required — not yet pulled into the model.' },
+  { src: 'BLS / Census ACS', role: 'Real county-level agricultural/forestry/fishing/hunting/mining workforce share (Census ACS Subject Table S2403), shown as context next to the occupation question in Signal Card. A population statistic, not an individual risk signal — doesn\'t replace the patient\'s own yes/no answer.', cited: true },
 ]
 
 const DataRigor = () => (
@@ -15,19 +15,23 @@ const DataRigor = () => (
       <div className="ts-data-grid">
         {sources.map((s) => (
           <div className="ts-data-card" key={s.src}>
-            <div className="src">{s.src}{s.real && <span className="ts-real-badge">LIVE &middot; REAL DATA</span>}</div>
+            <div className="src">
+              {s.src}
+              {s.real && <span className="ts-real-badge">LIVE &middot; REAL DATA</span>}
+              {s.cited && <span className="ts-real-badge ts-real-badge--cited">REAL CITATION</span>}
+            </div>
             <p>{s.role}</p>
           </div>
         ))}
       </div>
       <div className="ts-disclosure">
         <b>Where we are today:</b> geographic exposure risk is grounded in real CDC county-level
-        tickborne-disease data, not a guess. The risk-score point weights and the disclosed
-        non-conversion rate are still illustrative/synthetic, pending calibration against real
-        MEPS/HCUP/CCW data — we say so on the tool itself rather than overstate what's proven this
-        early. CCW and HCUP requests are both filed and submitted, awaiting response; MEPS and BLS/ACS
-        public files need no approval and are the next real-data integration planned. None of this
-        blocks what's live today.
+        tickborne-disease data, not a guess; the True Cost Card cites a real published AHRQ MEPS
+        statistic as supporting evidence; and real Census ACS occupational data now shows alongside
+        the occupation question. The risk-score point weights and the disclosed non-conversion rate
+        are still illustrative/synthetic, pending calibration against real HCUP/CCW data — we say so
+        on the tool itself rather than overstate what's proven this early. CCW and HCUP requests are
+        both filed and submitted, awaiting response. None of this blocks what's live today.
       </div>
     </div>
   </section>

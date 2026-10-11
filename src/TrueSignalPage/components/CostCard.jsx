@@ -72,6 +72,18 @@ const CostCard = () => {
             </p>
           </div>
         </div>
+
+        <div className="ts-disclosure" style={{ marginTop: 28 }}>
+          <b>Independent, real-world precedent for this pattern:</b> AHRQ's own published MEPS research found
+          that women 18+ with a cluster of hard-to-diagnose chronic pain conditions &mdash; including chronic
+          fatigue syndrome and fibromyalgia &mdash; had mean annual health care costs of <b>$10,542</b>, versus
+          <b> $4,357</b> for women without, a real, federally-documented excess-cost burden (Soni, A.,
+          <i> Health Care Use and Expenditures for Pain Conditions among Women 18 and Older</i>, AHRQ Statistical
+          Brief #342, September 2011, based on 2008 MEPS data). This is a different, broader condition group
+          than Lyme specifically, not Lyme-specific data, and 18 years old &mdash; cited here as real supporting
+          evidence that the underlying phenomenon (vague, dismissed symptom clusters carrying real excess cost)
+          is independently documented, not as an input to the cost figures above.
+        </div>
       </div>
     </section>
   )
