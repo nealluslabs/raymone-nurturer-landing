@@ -13,8 +13,34 @@ const EHRMockup = () => (
         integration.
       </p>
       <p className="ts-demo__note">
-        MOCKUP &mdash; illustrative EHR chrome and an unpopulated example patient, not a real EHR product or
-        real patient data. No working integration exists yet.
+        MOCKUP BELOW &mdash; illustrative EHR chrome and an unpopulated example patient, not a real EHR
+        product. But the launch mechanism underneath it is real, not mocked:
+      </p>
+      <div className="ts-ehr__liveproof">
+        <p className="ts-real-badge ts-real-badge--cited" style={{ marginBottom: 8 }}>LIVE &middot; REAL SMART ON FHIR LAUNCH</p>
+        <p>
+          Signal Card now has a real SMART App Launch endpoint (OAuth2 + PKCE, via the standard{' '}
+          <code>fhirclient</code> library), tested end-to-end against the public SMART Health IT
+          sandbox: real authorization request, real provider login, real patient selection, real
+          token exchange, real <code>Patient.read</code> FHIR call returning a real synthetic
+          patient record. No part of that mechanism is faked.
+        </p>
+        <a
+          className="ts-btn ts-btn--outline"
+          href="https://launch.smarthealthit.org/?launch_url=https%3A%2F%2Fraymonetech.com%2Ftruesignalanalytics%2Fehr-launch"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Try the real launch &rarr;
+        </a>
+        <p className="ts-hint" style={{ marginTop: 8 }}>
+          Honest limit: this proves the integration mechanism works, not a finished clinical
+          workflow &mdash; mapping the fetched patient context automatically into Signal Card's
+          scoring is the next build step (named in the plan below), not yet done.
+        </p>
+      </div>
+      <p className="ts-demo__note" style={{ marginTop: 16 }}>
+        The chrome below remains an illustrative mockup, not a real EHR product or real patient data.
       </p>
 
       <div className="ts-ehr__frame">
@@ -54,24 +80,29 @@ const EHRMockup = () => (
       </div>
 
       <div className="ts-ehr__plan">
-        <h3>The actual technical plan (not yet started)</h3>
+        <h3>The actual technical plan</h3>
         <ol>
           <li>
-            <b>SMART on FHIR App Launch</b> is the primary intended path &mdash; the EHR launches Signal Card
-            with OAuth2 context (patient, encounter, user) already established, so the clinician never leaves
-            their chart. The FHIR RiskAssessment resource already built (see the live demo) is exactly the
-            payload this launch pattern would read and write back.
+            <b>SMART on FHIR App Launch</b> &mdash; <i>done, not just planned.</i> The launch/redirect pair above
+            is live at <code>/truesignalanalytics/ehr-launch</code> and <code>/truesignalanalytics/ehr-app</code>,
+            tested end-to-end against the public sandbox. The FHIR RiskAssessment resource already built (see
+            the live demo) is exactly the payload a real EHR launch would read and write back.
           </li>
           <li>
-            <b>CDS Hooks</b> (patient-view or order-select hook) is a realistic alternative or complement &mdash;
-            it triggers Signal Card's logic automatically at a workflow moment, rather than requiring the
-            clinician to open an app at all.
+            <b>Automatic hand-off into scoring</b> &mdash; not yet built. Today the launch fetches and displays
+            real patient context; it doesn't yet map that context into Signal Card's <code>computeScore()</code>{' '}
+            automatically. That's the concrete next engineering step, named honestly rather than skipped.
           </li>
           <li>
-            <b>What's actually required to build this:</b> access to a vendor EHR sandbox (e.g., a public SMART
-            sandbox for initial development), registering Signal Card as an app, a security/privacy review
-            before touching any real patient context, and a pilot clinic willing to test a real launch. None of
-            this has started &mdash; it's named here as the concrete next step, not claimed as done.
+            <b>CDS Hooks</b> (patient-view or order-select hook) remains a realistic alternative or complement
+            &mdash; it would trigger Signal Card's logic automatically at a workflow moment, rather than
+            requiring the clinician to open an app at all. Not started.
+          </li>
+          <li>
+            <b>What's still required for a real pilot:</b> registering Signal Card with a vendor EHR's actual
+            (non-sandbox) app directory, a security/privacy review before touching real patient data, and a
+            pilot clinic willing to test a real launch. None of this has started &mdash; named here as the
+            concrete next step, not claimed as done.
           </li>
         </ol>
       </div>

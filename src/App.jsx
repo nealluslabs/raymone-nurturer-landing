@@ -3,6 +3,8 @@ import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import AgentsPage from './AgentsPage/AgentsPage';
 import ProjectsPage from './ProjectsPage/ProjectsPage';
 import TrueSignalPage from './TrueSignalPage/TrueSignalPage';
+import EHRLaunchPage from './TrueSignalPage/EHRLaunch/EHRLaunchPage';
+import EHRAppPage from './TrueSignalPage/EHRLaunch/EHRAppPage';
 
 {/*import PersonalLoansPage from './PersonalLoansPage/PersonalLoansPage';
 import AboutPage from './AboutPage/AboutPage';
@@ -50,6 +52,8 @@ const App = () => {
      
      < Route path="/projects"  element={<ProjectsPage/>}/>
      < Route path="/truesignalanalytics"  element={<TrueSignalPage/>}/>
+     < Route path="/truesignalanalytics/ehr-launch"  element={<EHRLaunchPage/>}/>
+     < Route path="/truesignalanalytics/ehr-app"  element={<EHRAppPage/>}/>
     {/* < Route path="/about"  element={<AboutPage/>}/> 
      < Route path="/badcredit"  element={<BadCreditPage/>}/>
      < Route path="/fastcash"  element={<FastCashPage/>}/>

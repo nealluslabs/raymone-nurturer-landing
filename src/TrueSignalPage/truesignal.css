@@ -113,6 +113,11 @@
   margin-top: 6px; background: var(--ts-accent-soft); border: 1px solid var(--ts-line-strong); border-radius: 6px;
   padding: 8px 10px; font-size: 12px;
 }
+.ts-ehr__liveproof {
+  margin: 18px 0; padding: 16px 18px; border: 1px solid var(--ts-line-strong); border-radius: 8px;
+  background: var(--ts-surface-2); display: flex; flex-direction: column; gap: 10px; align-items: flex-start;
+}
+.ts-ehr__liveproof p { font-size: 14px; line-height: 1.6; margin: 0; }
 .ts-ehr__plan { margin-top: 28px; }
 .ts-ehr__plan h3 { font-size: 17px; margin-bottom: 10px; }
 .ts-ehr__plan ol { padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
