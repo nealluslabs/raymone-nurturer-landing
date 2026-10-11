@@ -2,11 +2,18 @@ import React, { useMemo, useState } from 'react'
 import { buildRiskAssessment } from '../fhir'
 import { encodeStateToSearch, decodeStateFromSearch } from '../shareLink'
 
+// REAL DATA: CDC "Reported Tickborne Disease Cases by County of Residence, 2019-2022"
+// (cdc.gov/ticks/media/files/2024/05/AllTBD2022_Public.xlsx), Lyme disease column, divided
+// by 4 years and county population (2020 Census / ACS) for an average annual rate per
+// 100,000 residents. Tier cutoffs applied here (high >=50, moderate 10-50, low <10) echo
+// CDC's own >=10/100k "high-incidence state" threshold, extended to counties -- CDC does
+// not publish an official 3-tier county classification, so this bucketing is ours, applied
+// to real case/population figures rather than invented.
 const COUNTIES = [
-  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759' },
-  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901' },
-  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401' },
-  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301' },
+  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1 },
+  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1 },
+  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3 },
+  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33 },
 ]
 
 const SYMPTOMS = [
@@ -16,11 +23,11 @@ const SYMPTOMS = [
   { key: 'rash', label: 'Rash noticed' },
 ]
 
-// Sourced from ccw-analysis/analyze.py (2026-09-24 run) — a corrected cohort analysis
-// (flagged cohort N, conversion to Lyme within 12mo = P, rate = P/N) run against a
-// SYNTHETIC CCW-schema dataset, not real Medicare claims. Numbers will be replaced
-// once the real CMS CCW Limited Data Set request is approved and the same script is
-// re-run against it unchanged.
+// STILL SYNTHETIC, unlike the real county-level incidence data above. Sourced from
+// ccw-analysis/analyze.py (2026-09-24 run) — a corrected cohort analysis (flagged cohort
+// N, conversion to Lyme within 12mo = P, rate = P/N) run against a SYNTHETIC CCW-schema
+// dataset, not real Medicare claims. Numbers will be replaced once the real CMS CCW
+// Limited Data Set request is approved and the same script is re-run against it unchanged.
 const COUNTY_MODEL = {
   high: { conversionPct: 13.25, n: 1215, p: 161 },
   mod: { conversionPct: 5.6, n: 1662, p: 93 },
@@ -34,7 +41,7 @@ function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
 
   const geo = county.tier === 'high' ? 35 : county.tier === 'mod' ? 15 : 5
   score += geo
-  factors.push(['County tick-incidence tier', `${county.tier === 'high' ? 'High' : county.tier === 'mod' ? 'Moderate' : 'Low'} (+${geo})`])
+  factors.push(['County tick-incidence tier', `${county.tier === 'high' ? 'High' : county.tier === 'mod' ? 'Moderate' : 'Low'} — ${county.ratePer100k}/100k/yr (+${geo})`])
 
   const occAdd = occ === 'yes' ? 20 : 0
   score += occAdd
@@ -74,7 +81,7 @@ function computeScore({ symptoms, bite, occ, countyIdx, duration }) {
       ? "There's some chance your symptoms could be tick-related, based on where you live and your recent activity. Worth mentioning to your doctor if things don't improve soon."
       : "Based on what you've shared, a tick-related cause looks less likely right now — but tell your doctor if new symptoms or a bite show up."
 
-  return { score, tier, conversionPct, nonConversionPct, model, nextStep, patientBody, factors, zip: county.zip }
+  return { score, tier, conversionPct, nonConversionPct, model, nextStep, patientBody, factors, zip: county.zip, county }
 }
 
 const riskColor = (tier) =>
@@ -207,7 +214,10 @@ const Demo = () => {
                       <option key={c.label} value={i}>{c.label}</option>
                     ))}
                   </select>
-                  <p className="ts-hint">ZIP {result.zip} &middot; tier drives the geographic-exposure term below</p>
+                  <p className="ts-hint">
+                    ZIP {result.zip} &middot; {result.county.cases} cases / {result.county.population.toLocaleString()} residents,
+                    2019&ndash;2022 avg. &mdash; {result.county.ratePer100k}/100k/yr (real CDC county data, not modeled)
+                  </p>
                 </div>
               </div>
 
@@ -279,7 +289,10 @@ const Demo = () => {
                 Set once that request is approved. Separately, published literature indicates early two-tier Lyme
                 serology misses roughly 3 in 4 true cases (Branda et al., 2017) &mdash; a distinct testing-sensitivity
                 limitation this score does not resolve, which is why any elevated flag still recommends serology
-                and clinical follow-up rather than treating the score itself as a diagnosis.
+                and clinical follow-up rather than treating the score itself as a diagnosis. The county tier and
+                incidence rate shown above, however, are <b>real</b> &mdash; CDC "Reported Tickborne Disease Cases by
+                County of Residence, 2019&ndash;2022," not modeled. Only the conversion-rate/non-conversion figure
+                above remains synthetic pending real CCW/HCUP data.
               </p>
 
               <div className="ts-fhir ts-no-print">
