@@ -29,14 +29,22 @@ import { encodeStateToSearch, decodeStateFromSearch } from '../shareLink'
 // reported"). This measures a different thing than the county case rate above: the odds a
 // tick bite in this state carries the bacterium at all, vs. how often bites actually become
 // diagnosed Lyme cases county-wide.
-const COUNTIES = [
-  { label: 'Litchfield County, CT — High', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1, agPct: 0.77, tickInfectionPct: 19.45 },
-  { label: 'Bucks County, PA — High', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1, agPct: 0.35, tickInfectionPct: 23.57 },
-  { label: 'Hennepin County, MN — Moderate', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3, agPct: 0.43, tickInfectionPct: 21.11 },
-  { label: 'Fulton County, GA — Low', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33, agPct: 0.17, tickInfectionPct: null },
+// Worcester County, MA added 2026-10-11, same real-source standard as the original four:
+// CDC NNDSS case count (745, 2019-2022) / 4yr / 2022 ACS population (858,898) = 21.68/100k
+// (Moderate tier); ACS S2403 ag/forestry/fishing/hunting/mining share = 1,808/441,570 =
+// 0.41% of the civilian employed population. Added specifically because it's the real
+// county of the synthetic patient returned by the SMART on FHIR launch demo below -- added
+// for a genuine match, not picked arbitrarily. ArboNET state-level tick-infection % for
+// Massachusetts has not been pulled yet -- shown honestly as null, same treatment as Georgia.
+export const COUNTIES = [
+  { label: 'Litchfield County, CT — High', state: 'Connecticut', tier: 'high', zip: '06759', cases: 460, population: 185175, ratePer100k: 62.1, agPct: 0.77, tickInfectionPct: 19.45 },
+  { label: 'Bucks County, PA — High', state: 'Pennsylvania', tier: 'high', zip: '18901', cases: 1451, population: 646538, ratePer100k: 56.1, agPct: 0.35, tickInfectionPct: 23.57 },
+  { label: 'Hennepin County, MN — Moderate', state: 'Minnesota', tier: 'mod', zip: '55401', cases: 774, population: 1267416, ratePer100k: 15.3, agPct: 0.43, tickInfectionPct: 21.11 },
+  { label: 'Worcester County, MA — Moderate', state: 'Massachusetts', tier: 'mod', zip: '01772', cases: 745, population: 858898, ratePer100k: 21.68, agPct: 0.0041, tickInfectionPct: null },
+  { label: 'Fulton County, GA — Low', state: 'Georgia', tier: 'low', zip: '30301', cases: 14, population: 1065334, ratePer100k: 0.33, agPct: 0.17, tickInfectionPct: null },
 ]
 
-const SYMPTOMS = [
+export const SYMPTOMS = [
   { key: 'fatigue', label: 'Fatigue' },
   { key: 'joint', label: 'Joint pain' },
   { key: 'fog', label: 'Brain fog' },
@@ -111,7 +119,7 @@ const SYMPTOM_KEYS = SYMPTOMS.map((s) => s.key)
 
 const Demo = () => {
   const shared = useMemo(
-    () => (typeof window !== 'undefined' ? decodeStateFromSearch(window.location.search, SYMPTOM_KEYS) : null),
+    () => (typeof window !== 'undefined' ? decodeStateFromSearch(window.location.search, SYMPTOM_KEYS, COUNTIES.length - 1) : null),
     []
   )
 
@@ -188,7 +196,7 @@ const Demo = () => {
         <div className="ts-instrument" id="printable-card">
           {/* Intake */}
           <div className="ts-panel">
-            <div className="ts-panel-head"><h4>Intake</h4><span className="idx">01 / visit</span></div>
+            <div className="ts-panel-head"><h3>Intake</h3><span className="idx">01 / visit</span></div>
             <div className="ts-panel-body">
               <div className="ts-field-row">
                 <span className="ts-field-num">1</span>
@@ -243,7 +251,8 @@ const Demo = () => {
                       ? <>State-level: {result.county.tickInfectionPct}% of nymphal ticks tested carry the Lyme
                           bacterium (CDC ArboNET surveillance, Foster et al. 2023) &mdash; a different measure than
                           the case rate above: infection risk per bite, not diagnosed cases.</>
-                      : 'State-level tick infection-prevalence data: not reported for Georgia in CDC ArboNET surveillance (not zero — genuinely not published, so not shown as a number).'}
+                      : <>State-level tick infection-prevalence data: not reported for {result.county.state} in CDC ArboNET
+                          surveillance (not zero &mdash; genuinely not published, so not shown as a number).</>}
                   </p>
                 </div>
               </div>
@@ -289,7 +298,7 @@ const Demo = () => {
 
           {/* Readout */}
           <div className="ts-panel">
-            <div className="ts-panel-head"><h4>Signal readout</h4><span className="idx">clinician view</span></div>
+            <div className="ts-panel-head"><h3>Signal readout</h3><span className="idx">clinician view</span></div>
             <div className="ts-panel-body">
               <div className="ts-meter-row">
                 <span className="ts-meter-tier" style={{ color: riskColor(result.tier) }}>{result.tier}</span>

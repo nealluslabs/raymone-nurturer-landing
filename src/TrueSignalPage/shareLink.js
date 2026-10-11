@@ -17,7 +17,7 @@ export function encodeStateToSearch({ symptoms, bite, occ, countyIdx, duration }
   return params.toString()
 }
 
-export function decodeStateFromSearch(search, validSymptomKeys) {
+export function decodeStateFromSearch(search, validSymptomKeys, maxCountyIdx = 4) {
   const params = new URLSearchParams(search)
   if (!params.has('c')) return null // no shared state in the URL, use defaults
 
@@ -25,7 +25,7 @@ export function decodeStateFromSearch(search, validSymptomKeys) {
   const symptoms = s ? s.split('-').filter((k) => validSymptomKeys.includes(k)) : []
   const bite = params.get('b') === 'yes' ? 'yes' : 'no'
   const occ = params.get('o') === 'no' ? 'no' : 'yes'
-  const countyIdx = Math.max(0, Math.min(3, parseInt(params.get('c'), 10) || 0))
+  const countyIdx = Math.max(0, Math.min(maxCountyIdx, parseInt(params.get('c'), 10) || 0))
   const durationRaw = params.get('d')
   const duration = ['short', 'mid', 'long'].includes(durationRaw) ? durationRaw : 'long'
 

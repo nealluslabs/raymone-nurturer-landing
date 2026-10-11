@@ -34,9 +34,11 @@ const EHRMockup = () => (
           Try the real launch &rarr;
         </a>
         <p className="ts-hint" style={{ marginTop: 8 }}>
-          Honest limit: this proves the integration mechanism works, not a finished clinical
-          workflow &mdash; mapping the fetched patient context automatically into Signal Card's
-          scoring is the next build step (named in the plan below), not yet done.
+          The launch now also maps what a real chart can honestly supply into Signal Card
+          automatically &mdash; a real ZIP-matched county, real condition-keyword symptom
+          matches, a real Occupation observation if one exists &mdash; and says so per field.
+          Tick-bite recall and symptom duration have no standard FHIR equivalent in any chart, so
+          they're always left for the clinician to ask, never silently defaulted into the score.
         </p>
       </div>
       <p className="ts-demo__note" style={{ marginTop: 16 }}>
@@ -89,9 +91,10 @@ const EHRMockup = () => (
             the live demo) is exactly the payload a real EHR launch would read and write back.
           </li>
           <li>
-            <b>Automatic hand-off into scoring</b> &mdash; not yet built. Today the launch fetches and displays
-            real patient context; it doesn't yet map that context into Signal Card's <code>computeScore()</code>{' '}
-            automatically. That's the concrete next engineering step, named honestly rather than skipped.
+            <b>Automatic hand-off into scoring</b> &mdash; <i>done, with honest limits.</i> The launch maps real
+            address/condition/occupation data into Signal Card automatically where a chart can actually supply
+            it, and flags every field it can't (tick-bite recall, symptom duration have no FHIR equivalent in
+            any chart) rather than guessing. See <code>ehrMapping.js</code> for exactly what's matched and how.
           </li>
           <li>
             <b>CDS Hooks</b> (patient-view or order-select hook) remains a realistic alternative or complement
