@@ -176,7 +176,7 @@
 /* ---------- data & rigor ---------- */
 .ts-data-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
 @media (max-width: 900px) { .ts-data-grid { grid-template-columns: 1fr 1fr; } }
-.ts-data-card { background: var(--ts-surface); border: 1px solid var(--ts-line); border-radius: 10px; padding: 18px; }
+.ts-data-card { background: var(--ts-surface); border: 1px solid var(--ts-line); border-radius: 10px; padding: 18px; min-width: 0; }
 .ts-data-card .src { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 13px; color: var(--ts-ink); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .ts-real-badge {
   font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 9.5px; letter-spacing: .04em;
